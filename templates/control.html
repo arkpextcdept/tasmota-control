@@ -1,0 +1,33 @@
+<!-- Save this as control.html and upload to GitHub -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tasmota Switch Control</title>
+</head>
+<body>
+    <h2>Control Tasmota Switch</h2>
+    <label>Switch Number (1-4): </label>
+    <input type="number" id="switchNum" min="1" max="4"><br><br>
+    
+    <button onclick="sendCommand('on')">Turn ON</button>
+    <button onclick="sendCommand('off')">Turn OFF</button>
+
+    <p id="response"></p>
+
+    <script>
+        function sendCommand(action) {
+            const switchNum = document.getElementById('switchNum').value;
+            const url = `https://tasmota-flask.onrender.com/switch?switch=${switchNum}&action=${action}`;
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("response").innerText = JSON.stringify(data);
+                })
+                .catch(error => {
+                    document.getElementById("response").innerText = "Error: " + error;
+                });
+        }
+    </script>
+</body>
+</html>
