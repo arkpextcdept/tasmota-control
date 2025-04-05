@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import paho.mqtt.client as mqtt
 import os
 
@@ -33,6 +33,9 @@ def switch():
         "status": f"Switch {switch_num} turned {action.upper()}",
         "topic": topic
     })
+@app.route('/')
+def control():
+    return render_template('control.html')
 
 if __name__ == '__main__':
     # Important for Render deployment
