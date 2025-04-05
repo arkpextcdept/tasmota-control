@@ -1,13 +1,14 @@
 from flask import Flask, request, jsonify
 import paho.mqtt.client as mqtt
+import os
 
 app = Flask(__name__)
 
-# MQTT Configuration
-MQTT_BROKER = "fuji.lmq.cloudamqp.com"
-MQTT_PORT = 1883
-MQTT_USER = "vgfesutt:vgfesutt"
-MQTT_PASSWORD = "4Drb-Y8ryYLa0NoB0clL7Igq3OFETVN9"
+# MQTT Configuration from Environment Variables
+MQTT_BROKER = os.environ.get("MQTT_BROKER")
+MQTT_PORT = int(os.environ.get("MQTT_PORT", 1883))
+MQTT_USER = os.environ.get("MQTT_USER")
+MQTT_PASSWORD = os.environ.get("MQTT_PASSWORD")
 
 # MQTT Client Setup
 client = mqtt.Client()
@@ -34,4 +35,6 @@ def switch():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Important for Render deployment
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
