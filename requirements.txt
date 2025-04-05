@@ -1,2 +1,2 @@
-Flask==2.2.5
-paho-mqtt==1.6.1
+Flask
+paho-mqtt
