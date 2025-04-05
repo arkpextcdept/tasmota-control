@@ -1,28 +1,95 @@
-<!-- Save this as control.html and upload to GitHub -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Tasmota Switch Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1, h2, h3 {
+            margin: 10px 0;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2c3e50;
+        }
+        h2 {
+            font-size: 2em;
+            color: #34495e;
+        }
+        h3 {
+            font-size: 1.5em;
+            color: #7f8c8d;
+        }
+        label {
+            font-size: 1.2em;
+        }
+        input[type="number"] {
+            font-size: 1em;
+            padding: 5px;
+            width: 60px;
+            margin: 10px 0;
+        }
+        .button-container {
+            margin: 20px 0;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 0 10px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .on-button {
+            background-color: #27ae60;
+        }
+        .off-button {
+            background-color: #c0392b;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        #response {
+            font-size: 1.2em;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Control Tasmota Switch</h2>
-    <label>Switch Number (1-4): </label>
-    <input type="number" id="switchNum" min="1" max="4"><br><br>
-    
-    <button onclick="sendCommand('on')">Turn ON</button>
-    <button onclick="sendCommand('off')">Turn OFF</button>
+    <h1>A. R. Kalsekar Polytechnic</h1>
+    <h2>Department: Automation & Robotics</h2>
+    <h3>Lab: 118 IOT Lab</h3>
+
+    <label for="switchNum">Switch Number (1-4):</label>
+    <input type="number" id="switchNum" min="1" max="4"><br>
+
+    <div class="button-container">
+        <button class="on-button" onclick="sendCommand('on')">Turn ON</button>
+        <button class="off-button" onclick="sendCommand('off')">Turn OFF</button>
+    </div>
 
     <p id="response"></p>
 
     <script>
         function sendCommand(action) {
             const switchNum = document.getElementById('switchNum').value;
-            const url = `https://tasmota-flask.onrender.com/switch?switch=${switchNum}&action=${action}`;
+            if (switchNum < 1 || switchNum > 4) {
+                alert('Please enter a switch number between 1 and 4.');
+                return;
+            }
+            const url = `/switch?switch=${switchNum}&action=${action}`;
             
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("response").innerText = JSON.stringify(data);
+                    document.getElementById("response").innerText = data.status;
                 })
                 .catch(error => {
                     document.getElementById("response").innerText = "Error: " + error;
